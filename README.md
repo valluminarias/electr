@@ -1,6 +1,6 @@
 # electr
 
-This template should help get you started developing with Vue 3 in Vite.
+Simple App with Vue + vite and Capacitor JS
 
 ## Recommended IDE Setup
 
@@ -37,4 +37,16 @@ npm run dev
 
 ```sh
 npm run build
+```
+
+## Capacitor Js
+[Docs](https://capacitorjs.com/docs/)
+### Sync www build to Cordova
+```sh
+npx cap sync
+```
+
+### Open Android Project
+```sh
+npx cap open android
 ```
