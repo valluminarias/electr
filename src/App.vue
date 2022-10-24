@@ -1,47 +1,49 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { App } from '@capacitor/app';
+import { ref } from 'vue';
+import {
+  IonApp,
+  IonRouterOutlet,
+  IonIcon,
+  IonLabel,
+  IonTabBar,
+  IonTabButton,
+  IonTabs
+} from '@ionic/vue';
+
+const beforeTabChange = () => {
+  // do something before tab change
+}
+const afterTabChange = () => {
+  // do something after tab change
+}
+
+const isMobile = ref(false);
+
+App.getInfo()
+  .then((info) => {
+    isMobile.value = true;
+  })
+  .catch((err) => {
+    isMobile.value = false;
+    console.log('Not running on mobile.');
+  })
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <ion-app>
+    <ion-tabs @ionTabsWillChange="beforeTabChange" @ionTabsDidChange="afterTabChange">
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button tab="schedule" href="/">
+          <ion-label>Home</ion-label>
+          <ion-badge>6</ion-badge>
+        </ion-tab-button>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+        <ion-tab-button tab="speakers" href="#">
+          <ion-label>List</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+      <ion-router-outlet />
+    </ion-tabs>
+  </ion-app>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>

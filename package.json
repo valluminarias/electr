@@ -6,16 +6,23 @@
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",
-    "type-check": "vue-tsc --noEmit"
+    "type-check": "vue-tsc --noEmit",
+    "ionic:build": "npm run build",
+    "ionic:serve": "npm run dev"
   },
   "dependencies": {
     "@capacitor/android": "4.4.0",
     "@capacitor/app": "4.1.0",
     "@capacitor/core": "4.4.0",
-    "vue": "^3.2.41"
+    "@ionic/vue": "^6.3.2",
+    "@ionic/vue-router": "^6.3.2",
+    "dayjs": "^1.11.6",
+    "vue": "^3.2.41",
+    "vue-router": "^4.1.5"
   },
   "devDependencies": {
     "@capacitor/cli": "4.4.0",
+    "@ionic/cli": "6.20.3",
     "@types/node": "^16.11.68",
     "@vitejs/plugin-vue": "^3.1.2",
     "@vue/tsconfig": "^0.1.3",
