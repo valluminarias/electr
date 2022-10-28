@@ -38,7 +38,7 @@ npx cap add android
 ```sh
 npx cap add ios
 ```
-### Sync www build to Cordova
+### Sync www build to Capacitor
 ```sh
 npx cap sync
 ```
