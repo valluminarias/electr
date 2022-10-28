@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed, reactive, ref, watch } from 'vue'
 import type { Reading } from "@/types/Reading";
-import { useReadingStore } from "@/composables/useReadingStore";
 import dayjs from 'dayjs'
 import {
   IonHeader,
@@ -19,8 +18,6 @@ import {
   modalController,
 } from '@ionic/vue'
 import { checkmark, close } from 'ionicons/icons'
-
-const {createReading} = useReadingStore();
 
 const reading = reactive<Reading>({
   dt: dayjs().valueOf(),
@@ -55,8 +52,6 @@ const cancel = () => {
 }
 
 const submit = async () => {
-  await createReading(reading);
-
   return modalController.dismiss(reading, 'submit')
 }
 </script>
