@@ -1,25 +1,18 @@
 <script setup lang="ts">
-import { App } from '@capacitor/app'
+import { isPlatform, getPlatforms } from '@ionic/vue'
 import { ref } from 'vue'
-import {
-  IonApp,
-  IonRouterOutlet,
-} from '@ionic/vue'
+import { IonApp, IonRouterOutlet } from '@ionic/vue'
 
-const isMobile = ref(false)
+const isMobile = ref(isPlatform('mobile'))
 
-App.getInfo()
-  .then((info) => {
-    isMobile.value = true
-  })
-  .catch((err) => {
-    isMobile.value = false
-    console.log('Not running on mobile.')
-  })
+console.log(getPlatforms());
 </script>
 
 <template>
-  <ion-app>
+  <ion-app v-if="isMobile">
     <ion-router-outlet />
   </ion-app>
+  <template v-else>
+    This platform is not supported yet.
+  </template>
 </template>

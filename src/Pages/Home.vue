@@ -29,6 +29,7 @@ import {
   IonItemGroup,
   IonItemDivider,
   IonItem,
+  IonText,
   toastController,
   modalController,
 } from '@ionic/vue'

@@ -4,3 +4,6 @@ export type Reading = {
     amount: number,
     rate: number,
 }
+
+
+export type ReadingList = Reading[]

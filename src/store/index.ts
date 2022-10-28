@@ -1,8 +1,8 @@
-import type { Reading } from '@/types/Reading';
+import type { Reading, ReadingList } from '@/types/Reading';
 import { Storage } from '@ionic/storage';
 
 const store = new Storage();
-await store.create();
+store.create();
 
 const save = async (reading: Reading) => {
   const key = reading.dt.toString();
@@ -10,7 +10,7 @@ const save = async (reading: Reading) => {
   return await store.set(key, val);
 }
 
-const fetchAll = async () => {
+const fetchAll = async (): Promise<ReadingList> => {
     let readings: Reading[] = [];
 
     await store.forEach(v => {
