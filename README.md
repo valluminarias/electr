@@ -28,12 +28,27 @@ npm run build
 
 ## Capacitor Js
 [Docs](https://capacitorjs.com/docs/)
+
+### Add android
+```sh
+npx cap add android
+```
+
+### Add ios
+```sh
+npx cap add ios
+```
 ### Sync www build to Cordova
 ```sh
 npx cap sync
 ```
 
-### Open Android Project
+### Build in Android Studio for Android
 ```sh
 npx cap open android
+```
+
+### Build in XCode for iOS
+```sh
+npx cap open ios
 ```
