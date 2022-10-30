@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, reactive, ref, unref, watch } from 'vue'
 import type { Reading } from '@/types/Reading'
 import dayjs from 'dayjs'
 import { formatNumber } from '@/utils'
@@ -28,7 +28,7 @@ const cancel = () => {
 }
 
 const submit = async () => {
-  return modalController.dismiss(reading, 'submit')
+  return modalController.dismiss(unref(reading), 'submit')
 }
 </script>
 
