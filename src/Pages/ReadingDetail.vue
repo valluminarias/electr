@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref, unref } from 'vue'
+import { computed, ref, unref } from 'vue'
 import { useRoute } from 'vue-router'
 import type { Reading } from '@/types/Reading'
 import { useReadingStore } from '@/composables/useReadingStore'
@@ -18,6 +18,7 @@ import {
   IonLabel,
   useIonRouter,
   toastController,
+  onIonViewWillEnter,
 } from '@ionic/vue'
 import { arrowBack, pencil, trash, informationCircle } from 'ionicons/icons'
 import dayjs from 'dayjs'
@@ -32,7 +33,7 @@ const { fetchReading, deleteReading } = useReadingStore()
 const key = route.params.key.toString()
 const reading = ref<Reading | null>(null)
 
-onMounted(async () => {
+onIonViewWillEnter(async () => {
   reading.value = await fetchReading(key)
 })
 
@@ -59,6 +60,10 @@ const remove = async () => {
     setTimeout(() => router.back(), 300)
   }
 }
+
+const edit = () => {
+  router.push(`/readings/${key}/edit`)
+}
 </script>
 
 <template>
@@ -72,7 +77,7 @@ const remove = async () => {
           </ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
-          <ion-button>
+          <ion-button @click="edit()">
             <ion-icon :icon="pencil"></ion-icon>
           </ion-button>
           <ion-button @click="remove()">

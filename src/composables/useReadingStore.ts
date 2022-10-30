@@ -24,6 +24,12 @@ export function useReadingStore() {
         return JSON.parse(atob(v));
     }
 
+    const updateReading = async (key: string, reading: Reading) => {
+        await deleteReading(reading);
+        await store.save(key, reading);
+        readings.value.push(reading);
+    }
+
     const deleteReading = async (reading: Reading) => {
         const key = reading.dt.toString();
         await store.remove(key);
@@ -46,6 +52,7 @@ export function useReadingStore() {
         fetchReadings,
         fetchReading,
         createReading,
+        updateReading,
         deleteReading,
     }
 }

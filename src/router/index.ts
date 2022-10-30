@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 const Home = () => import('@/Pages/Home.vue')
 const List = () => import('@/Pages/List.vue')
 const ReadingDetail = () => import('@/Pages/ReadingDetail.vue')
+const EditReading = () => import('@/Pages/EditReading.vue')
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,6 +21,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/readings/:key',
     component: ReadingDetail,
+  },
+  {
+    path: '/readings/:key/edit',
+    component: EditReading,
   },
 ]
 

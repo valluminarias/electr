@@ -19,40 +19,9 @@ import {
   modalController,
 } from '@ionic/vue'
 import { checkmark, close } from 'ionicons/icons'
+import { useReadingForm } from '@/composables/useReadingForm'
 
-const reading = reactive<Reading>({
-  dt: dayjs().valueOf(),
-  val: 0,
-  amount: 0,
-  rate: 0,
-})
-const dt = ref(dayjs().format('YYYY-MM-DD'))
-
-const computedRate = computed(() => {
-  return Number(Number(reading.rate).toFixed(2)) * 1
-})
-
-watch(dt, (v) => {
-  reading.dt = dayjs(v).valueOf()
-})
-
-watch(
-  () => reading.val,
-  (v) => {
-    if (v > 0 && reading.amount > 0) {
-      reading.rate = reading.amount / reading.val
-    }
-  },
-)
-
-watch(
-  () => reading.amount,
-  (v) => {
-    if (v > 0 && reading.val > 0) {
-      reading.rate = v / reading.val
-    }
-  },
-)
+const { reading, dt, computedRate } = useReadingForm()
 
 const cancel = () => {
   return modalController.dismiss(null, 'cancel')
@@ -119,8 +88,10 @@ const submit = async () => {
         ></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label>Rate(per KWh):</ion-label>
-        <ion-label class="ion-text-end">{{ formatNumber(computedRate) }}/kWh</ion-label>
+        <ion-label>Rate(/KWh):</ion-label>
+        <ion-label class="ion-text-end">
+          {{ formatNumber(computedRate) }}/kWh
+        </ion-label>
       </ion-item>
     </ion-list>
   </ion-content>
