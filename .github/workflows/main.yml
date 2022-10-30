@@ -31,7 +31,6 @@ jobs:
 
       - name: Sync Capacitor
         run: |
-          npx cap add android
           npx cap sync
 
       - name: Extract Android signing key from env
@@ -40,7 +39,9 @@ jobs:
           base64 -d android/release.jks.base64 > android/release.jks
 
       - name: Build app apk
-        run: npx cap build --keystorepath release.jks --keystorepass ${{ secrets.RELEASE_KEYSTORE_PASSWORD }} --keystorealias release --keystorealiaspass ${{ secrets.RELEASE_KEYSTORE_PASSWORD }} --androidreleasetype APK android
+        run: |
+          chmod +x ./android/gradlew
+          npx cap build --keystorepath release.jks --keystorepass ${{ secrets.RELEASE_KEYSTORE_PASSWORD }} --keystorealias release --keystorealiaspass ${{ secrets.RELEASE_KEYSTORE_PASSWORD }} --androidreleasetype APK android
 
       - name: Upload release apk
         uses: actions/upload-artifact@v3

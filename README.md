@@ -38,8 +38,3 @@ npx cap sync
 ```sh
 npx cap open android
 ```
-
-### Build in XCode for iOS
-```sh
-npx cap open ios
-```
