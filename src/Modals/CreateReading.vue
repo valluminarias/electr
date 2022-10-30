@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { computed, reactive, ref, watch } from 'vue'
-import type { Reading } from "@/types/Reading";
+import type { Reading } from '@/types/Reading'
 import dayjs from 'dayjs'
+import { formatNumber } from '@/utils'
 import {
   IonHeader,
   IonToolbar,
@@ -35,17 +36,23 @@ watch(dt, (v) => {
   reading.dt = dayjs(v).valueOf()
 })
 
-watch(() => reading.val, (v) => {
-  if (v > 0 && reading.amount > 0) {
-    reading.rate = reading.amount / reading.val;
-  }
-})
+watch(
+  () => reading.val,
+  (v) => {
+    if (v > 0 && reading.amount > 0) {
+      reading.rate = reading.amount / reading.val
+    }
+  },
+)
 
-watch(() => reading.amount, (v) => {
-  if (v > 0 && reading.val > 0) {
-    reading.rate = v / reading.val;
-  }
-})
+watch(
+  () => reading.amount,
+  (v) => {
+    if (v > 0 && reading.val > 0) {
+      reading.rate = v / reading.val
+    }
+  },
+)
 
 const cancel = () => {
   return modalController.dismiss(null, 'cancel')
@@ -73,7 +80,7 @@ const submit = async () => {
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
-    <ion-list>
+    <ion-list lines="full">
       <ion-list-header>
         <ion-label>Details</ion-label>
       </ion-list-header>
@@ -85,6 +92,8 @@ const submit = async () => {
           class="ion-text-end"
           placeholder="Choose Date"
           v-model="dt"
+          slot="end"
+          :clear-input="true"
         ></ion-input>
       </ion-item>
       <ion-item>
@@ -93,7 +102,9 @@ const submit = async () => {
           type="number"
           class="ion-text-end"
           placeholder="Enter Reading in KWh"
+          :clear-input="true"
           v-model="reading.val"
+          @click="$event.target.select()"
         ></ion-input>
       </ion-item>
       <ion-item>
@@ -102,18 +113,14 @@ const submit = async () => {
           type="number"
           class="ion-text-end"
           placeholder="Enter Reading in KWh"
+          :clear-input="true"
           v-model="reading.amount"
+          @click="$event.target.select()"
         ></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>Rate(per KWh):</ion-label>
-        <ion-input
-          type="number"
-          :disabled="true"
-          class="ion-text-end"
-          placeholder="Rate/KWh"
-          :value="computedRate"
-        ></ion-input>
+        <ion-label class="ion-text-end">{{ formatNumber(computedRate) }}/kWh</ion-label>
       </ion-item>
     </ion-list>
   </ion-content>

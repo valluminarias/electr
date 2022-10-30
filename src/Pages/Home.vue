@@ -4,7 +4,7 @@ import { reactive, computed } from 'vue'
 import type { Reading } from '@/types/Reading'
 import { useReadingStore } from '@/composables/useReadingStore'
 import CreateReading from '@/Modals/CreateReading.vue'
-import {formatDate, formatNumber} from "@/utils";
+import { formatDate, formatNumber } from '@/utils'
 import {
   IonToolbar,
   IonTitle,
@@ -19,6 +19,7 @@ import {
   IonCardTitle,
   IonCardContent,
   IonLabel,
+  IonText,
   IonFab,
   IonFabButton,
   IonGrid,
@@ -29,13 +30,42 @@ import {
   IonItemGroup,
   IonItemDivider,
   IonItem,
-  IonText,
   toastController,
   modalController,
+  useIonRouter,
+  onIonViewWillEnter,
 } from '@ionic/vue'
-import { personCircle, search, addOutline, colorWand } from 'ionicons/icons'
+import {
+  personCircle,
+  search,
+  addOutline,
+  colorWand,
+  informationCircle,
+} from 'ionicons/icons'
 
+const router = useIonRouter()
 const store = reactive(useReadingStore())
+
+/**
+ * TODO: implement fetching latestReadings only
+ * instead of fetching all readings
+ */
+onIonViewWillEnter(async () => await store.fetchReadings())
+
+const thisMonthReading = computed<Reading | null>(() => {
+  return (
+    store.readings.filter((r) => {
+      const thisMonth = dayjs().month
+      return dayjs(r.dt).month === thisMonth
+    })[0] ?? null
+  )
+})
+
+const openDetails = async (reading: Reading) => {
+  const key = reading.dt.toString()
+
+  router.push(`/readings/${key}`)
+}
 
 const openCreate = async () => {
   const modal = await modalController.create({
@@ -49,6 +79,7 @@ const openCreate = async () => {
     await store.createReading(data)
 
     const toast = await toastController.create({
+      icon: informationCircle,
       message: 'New Reading Saved!',
       position: 'top',
       color: 'success',
@@ -58,14 +89,6 @@ const openCreate = async () => {
     await toast.present()
   }
 }
-
-const thisMonthReading = computed<Reading | null>(() => {
-  return store.readings.filter(r => {
-    const thisMonth = dayjs().month;
-    return dayjs(r.dt).month === thisMonth;
-  })[0] ?? null;
-});
-
 </script>
 
 <template>
@@ -95,7 +118,9 @@ const thisMonthReading = computed<Reading | null>(() => {
                 <ion-label>{{ thisMonthReading.val }} kWh</ion-label>
               </ion-col>
               <ion-col>
-                <ion-label>{{ formatNumber(thisMonthReading.amount) }}</ion-label>
+                <ion-label>
+                  {{ formatNumber(thisMonthReading.amount) }}
+                </ion-label>
               </ion-col>
             </ion-row>
           </ion-grid>
@@ -108,13 +133,18 @@ const thisMonthReading = computed<Reading | null>(() => {
       <div style="margin-top: 1rem;">
         <ion-list>
           <ion-list-header>
-            <ion-label>Reading List</ion-label>
+            <ion-toolbar>
+              <ion-label>Latest Readings</ion-label>
+              <ion-buttons slot="primary" color="primary">
+                <ion-button router-link="/list" v-if="store.latestReadings.length > 0">View All</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
           </ion-list-header>
-          <ion-item-group v-for="read in store.orderedReadings">
+          <ion-item-group v-for="read in store.latestReadings">
             <ion-item-divider>
               <ion-label>{{ formatDate(read.dt) }}</ion-label>
             </ion-item-divider>
-            <ion-item>
+            <ion-item direction="forward" button @click="openDetails(read)">
               <ion-grid>
                 <ion-row>
                   <ion-col size-md="6">
@@ -133,11 +163,14 @@ const thisMonthReading = computed<Reading | null>(() => {
             </ion-item>
           </ion-item-group>
         </ion-list>
-        <div v-if="store.orderedReadings.length == 0" class="ion-text-center ion-margin ion-padding">
-            <ion-icon color="medium" size="large" :icon="colorWand"></ion-icon>
-            <ion-text color="medium">
-              <h5>No Data Yet. Create a record first!</h5>
-            </ion-text>
+        <div
+          v-if="store.latestReadings.length == 0"
+          class="ion-text-center ion-margin ion-padding"
+        >
+          <ion-icon color="medium" size="large" :icon="colorWand"></ion-icon>
+          <ion-text color="medium">
+            <h5>No Data Yet. Create a record first!</h5>
+          </ion-text>
         </div>
       </div>
       <ion-fab vertical="bottom" horizontal="end" slot="fixed">

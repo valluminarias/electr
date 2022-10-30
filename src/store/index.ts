@@ -4,9 +4,8 @@ import { Storage } from '@ionic/storage';
 const store = new Storage();
 store.create();
 
-const save = async (reading: Reading) => {
-  const key = reading.dt.toString();
-  const val = btoa(JSON.stringify(reading));
+const save = async (key: string, data: object) => {
+  const val = btoa(JSON.stringify(data));
   return await store.set(key, val);
 }
 
@@ -30,10 +29,15 @@ const find = async (key: string) => {
     return await store.get(key);
 }
 
+const remove = async (key: string) => {
+    return await store.remove(key);
+}
+
 export default {
     store,
-    save,
-    fetchKeys,
-    find,
     fetchAll,
+    fetchKeys,
+    save,
+    find,
+    remove,
 };
