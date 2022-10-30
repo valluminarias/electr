@@ -11,9 +11,10 @@
     "ionic:serve": "npm run dev"
   },
   "dependencies": {
-    "@capacitor/android": "4.4.0",
+    "@capacitor/android": "^4.4.0",
     "@capacitor/app": "4.1.0",
-    "@capacitor/core": "4.4.0",
+    "@capacitor/core": "^4.4.0",
+    "@capacitor/ios": "^4.4.0",
     "@ionic/storage": "^3.0.6",
     "@ionic/vue": "^6.3.2",
     "@ionic/vue-router": "^6.3.2",
@@ -22,7 +23,7 @@
     "vue-router": "^4.1.5"
   },
   "devDependencies": {
-    "@capacitor/cli": "4.4.0",
+    "@capacitor/cli": "^4.4.0",
     "@ionic/cli": "6.20.3",
     "@types/node": "^16.11.68",
     "@vitejs/plugin-vue": "^3.1.2",

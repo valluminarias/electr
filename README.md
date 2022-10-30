@@ -29,15 +29,6 @@ npm run build
 ## Capacitor Js
 [Docs](https://capacitorjs.com/docs/)
 
-### Add android
-```sh
-npx cap add android
-```
-
-### Add ios
-```sh
-npx cap add ios
-```
 ### Sync www build to Capacitor
 ```sh
 npx cap sync
