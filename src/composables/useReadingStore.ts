@@ -1,6 +1,6 @@
 import type { Reading, ReadingList } from "@/types/Reading";
 import store from "@/store";
-import { computed, onMounted, ref, type Ref } from "vue";
+import { computed, ref, type Ref } from "vue";
 
 export function useReadingStore() {
     const readings: Ref<ReadingList> = ref([]);
@@ -10,7 +10,7 @@ export function useReadingStore() {
     }
 
     const createReading = async (reading: Reading) => {
-        const key = reading.dt.toString();
+        const key = reading._id;
         await store.save(key, reading);
         readings.value.push(reading);
     }
@@ -24,14 +24,14 @@ export function useReadingStore() {
         return JSON.parse(atob(v));
     }
 
-    const updateReading = async (key: string, reading: Reading) => {
+    const updateReading = async (reading: Reading) => {
         await deleteReading(reading);
-        await store.save(key, reading);
+        await store.save(reading._id, reading);
         readings.value.push(reading);
     }
 
     const deleteReading = async (reading: Reading) => {
-        const key = reading.dt.toString();
+        const key = reading._id;
         await store.remove(key);
         readings.value.splice(readings.value.indexOf(reading), 1);
     }
@@ -45,7 +45,6 @@ export function useReadingStore() {
     })
 
     return {
-        store,
         readings,
         orderedReadings,
         latestReadings,

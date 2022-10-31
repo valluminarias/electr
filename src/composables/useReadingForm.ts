@@ -1,9 +1,11 @@
 import type { Reading } from '@/types/Reading'
 import dayjs from 'dayjs'
 import { computed, ref, watch, watchEffect, type Ref } from 'vue'
+import { v4 as uuidv4 } from 'uuid';
 
 export function useReadingForm() {
     const reading = ref<Reading>({
+        _id: uuidv4(),
         dt: dayjs().valueOf(),
         val: 0,
         amount: 0,

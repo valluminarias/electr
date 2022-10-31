@@ -21,10 +21,6 @@ const fetchAll = async (): Promise<ReadingList> => {
     return readings;
 }
 
-const fetchKeys = async () => {
-    return await store.keys();
-}
-
 const find = async (key: string) => {
     return await store.get(key);
 }
@@ -36,7 +32,6 @@ const remove = async (key: string) => {
 export default {
     store,
     fetchAll,
-    fetchKeys,
     save,
     find,
     remove,

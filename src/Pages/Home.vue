@@ -62,7 +62,7 @@ const thisMonthReading = computed<Reading | null>(() => {
 })
 
 const openDetails = async (reading: Reading) => {
-  const key = reading.dt.toString()
+  const key = reading._id
 
   router.push(`/readings/${key}`)
 }

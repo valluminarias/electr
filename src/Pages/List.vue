@@ -26,7 +26,7 @@ const { fetchReadings, orderedReadings } = useReadingStore()
 onIonViewWillEnter(async () => await fetchReadings())
 
 const openDetails = async (reading: Reading) => {
-  const key = reading.dt.toString()
+  const key = reading._id
 
   router.push(`/readings/${key}`)
 }

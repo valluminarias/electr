@@ -52,7 +52,7 @@ const cancel = () => {
 
 const submitEdit = async () => {
     const key = reading.value.dt.toString();
-    await updateReading(key, unref(reading));
+    await updateReading(unref(reading));
 
     const toast = await toastController.create({
       icon: informationCircle,
