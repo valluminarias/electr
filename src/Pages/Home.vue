@@ -165,7 +165,7 @@ const openCreate = async () => {
         </ion-list>
         <div
           v-if="store.latestReadings.length == 0"
-          class="ion-text-center ion-margin ion-padding"
+          class="text-center ion-margin ion-padding"
         >
           <ion-icon color="medium" size="large" :icon="colorWand"></ion-icon>
           <ion-text color="medium">

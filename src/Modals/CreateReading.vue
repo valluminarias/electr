@@ -58,7 +58,7 @@ const submit = async () => {
         <ion-label>Date:</ion-label>
         <ion-input
           type="date"
-          class="ion-text-end"
+          class="text-end"
           placeholder="Choose Date"
           v-model="dt"
           slot="end"
@@ -69,7 +69,7 @@ const submit = async () => {
         <ion-label>Reading(KWh):</ion-label>
         <ion-input
           type="number"
-          class="ion-text-end"
+          class="text-end"
           placeholder="Enter Reading in KWh"
           :clear-input="true"
           v-model="reading.val"
@@ -80,7 +80,7 @@ const submit = async () => {
         <ion-label>Amount:</ion-label>
         <ion-input
           type="number"
-          class="ion-text-end"
+          class="text-end"
           placeholder="Enter Reading in KWh"
           :clear-input="true"
           v-model="reading.amount"
@@ -89,7 +89,7 @@ const submit = async () => {
       </ion-item>
       <ion-item>
         <ion-label>Rate(/KWh):</ion-label>
-        <ion-label class="ion-text-end">
+        <ion-label class="text-end">
           {{ formatNumber(computedRate) }}/kWh
         </ion-label>
       </ion-item>

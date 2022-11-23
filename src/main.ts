@@ -3,7 +3,7 @@ import { IonicVue } from '@ionic/vue';
 import App from './App.vue'
 import router from './router';
 
-import "./assets/ionic.css"
+import "./assets/css/app.css"
 
 const app = createApp(App).use(IonicVue).use(router);
 
