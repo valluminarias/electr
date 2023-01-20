@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-import { computed, reactive, ref, unref, watch } from 'vue'
-import type { Reading } from '@/types/Reading'
-import dayjs from 'dayjs'
+import { unref, onMounted } from 'vue'
 import { formatNumber } from '@/utils'
 import {
   IonHeader,
@@ -16,19 +14,23 @@ import {
   IonListHeader,
   IonItem,
   IonInput,
-  modalController,
 } from '@ionic/vue'
 import { checkmark, close } from 'ionicons/icons'
 import { useReadingForm } from '@/composables/useReadingForm'
+import type { Reading } from '@/types/Reading'
 
-const { reading, dt, computedRate } = useReadingForm()
+const { reading, dt, computedRate, resetReading } = useReadingForm()
 
+const emit = defineEmits<{
+  (e: 'submit', value: Reading): void,
+  (e: 'cancel'): void,
+}>()
 const cancel = () => {
-  return modalController.dismiss(null, 'cancel')
+  emit('cancel')
 }
 
 const submit = async () => {
-  return modalController.dismiss(unref(reading), 'submit')
+  emit('submit', unref(reading))
 }
 </script>
 

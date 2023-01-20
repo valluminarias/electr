@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import { reactive, computed } from 'vue'
-import type { Reading } from '@/types/Reading'
+import { computed, defineAsyncComponent, ref } from 'vue'
+import type { Reading, ReadingList } from '@/types/Reading'
 import { useReadingStore } from '@/composables/useReadingStore'
-import CreateReading from '@/Modals/CreateReading.vue'
+import Chart from '@/Pages/Partials/Chart.vue'
 import { formatDate, formatNumber } from '@/utils'
 import {
   IonToolbar,
@@ -15,8 +15,6 @@ import {
   IonButton,
   IonIcon,
   IonCard,
-  IonCardHeader,
-  IonCardTitle,
   IonCardContent,
   IonLabel,
   IonText,
@@ -30,35 +28,35 @@ import {
   IonItemGroup,
   IonItemDivider,
   IonItem,
+  IonModal,
   toastController,
-  modalController,
   useIonRouter,
   onIonViewWillEnter,
 } from '@ionic/vue'
 import {
-  personCircle,
-  search,
   addOutline,
   colorWand,
   informationCircle,
 } from 'ionicons/icons'
 
+const CreateReading = defineAsyncComponent(() => import('@/Modals/CreateReading.vue'))
+
 const router = useIonRouter()
-const store = reactive(useReadingStore())
+const { orderedReadings, fetchReadings, createReading } = useReadingStore()
 
-/**
- * TODO: implement fetching latestReadings only
- * instead of fetching all readings
- */
-onIonViewWillEnter(async () => await store.fetchReadings())
+onIonViewWillEnter(async () => await fetchReadings())
 
-const thisMonthReading = computed<Reading | null>(() => {
-  return (
-    store.readings.filter((r) => {
-      const thisMonth = dayjs().month
-      return dayjs(r.dt).month === thisMonth
-    })[0] ?? null
-  )
+const presentYear = dayjs().year()
+
+const latestReadings = computed<ReadingList>(() => {
+  const r = [...orderedReadings.value]
+  return r
+    .reverse()
+    .slice(0, 5)
+})
+
+const latestReadingsCount = computed<number>(() => {
+  return latestReadings.value.length
 })
 
 const openDetails = async (reading: Reading) => {
@@ -67,16 +65,14 @@ const openDetails = async (reading: Reading) => {
   router.push(`/readings/${key}`)
 }
 
+const modalOpened = ref(false)
+
 const openCreate = async () => {
-  const modal = await modalController.create({
-    component: CreateReading,
-  })
+  modalOpened.value = true
+}
 
-  modal.present()
-  const { data, role } = await modal.onWillDismiss()
-
-  if (role == 'submit') {
-    await store.createReading(data)
+const submitCreate = async (data: Reading) => {
+    await createReading(data)
 
     const toast = await toastController.create({
       icon: informationCircle,
@@ -87,7 +83,7 @@ const openCreate = async () => {
       animated: true,
     })
     await toast.present()
-  }
+    modalOpened.value = false
 }
 </script>
 
@@ -95,52 +91,29 @@ const openCreate = async () => {
   <ion-page>
     <ion-header class="ion-no-border">
       <ion-toolbar color="primary">
-        <ion-buttons slot="end">
-          <ion-button>
-            <ion-icon slot="icon-only" :icon="search"></ion-icon>
-          </ion-button>
-          <ion-button>
-            <ion-icon slot="icon-only" :icon="personCircle"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <ion-title>Welcome</ion-title>
+        <ion-title class="mt-4">Welcome</ion-title>
+        <ion-card>
+          <ion-card-content>
+            <Chart :year="presentYear" :readings="orderedReadings"></Chart>
+          </ion-card-content>
+        </ion-card>
       </ion-toolbar>
     </ion-header>
-    <ion-content class="ion-padding">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>This Month Reading</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <ion-grid v-if="thisMonthReading">
-            <ion-row>
-              <ion-col>
-                <ion-label>{{ thisMonthReading.val }} kWh</ion-label>
-              </ion-col>
-              <ion-col>
-                <ion-label>
-                  {{ formatNumber(thisMonthReading.amount) }}
-                </ion-label>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-          <template v-else>
-            No readings recorded for this month yet.
-          </template>
-        </ion-card-content>
-      </ion-card>
+    <ion-content>
 
-      <div style="margin-top: 1rem;">
+      <div class="mt-1">
         <ion-list>
           <ion-list-header>
             <ion-toolbar>
               <ion-label>Latest Readings</ion-label>
               <ion-buttons slot="primary" color="primary">
-                <ion-button router-link="/list" v-if="store.latestReadings.length > 0">View All</ion-button>
+                <ion-button router-link="/list" v-if="latestReadingsCount > 0">
+                  View All
+                </ion-button>
               </ion-buttons>
             </ion-toolbar>
           </ion-list-header>
-          <ion-item-group v-for="read in store.latestReadings">
+          <ion-item-group v-for="read in latestReadings">
             <ion-item-divider>
               <ion-label>{{ formatDate(read.dt) }}</ion-label>
             </ion-item-divider>
@@ -164,7 +137,7 @@ const openCreate = async () => {
           </ion-item-group>
         </ion-list>
         <div
-          v-if="store.latestReadings.length == 0"
+          v-if="latestReadingsCount == 0"
           class="text-center ion-margin ion-padding"
         >
           <ion-icon color="medium" size="large" :icon="colorWand"></ion-icon>
@@ -179,5 +152,11 @@ const openCreate = async () => {
         </ion-fab-button>
       </ion-fab>
     </ion-content>
+
+    <ion-modal :is-open="modalOpened">
+      <ion-content>
+        <CreateReading @cancel="modalOpened = false" @submit="submitCreate"></CreateReading>
+      </ion-content>
+    </ion-modal>
   </ion-page>
 </template>

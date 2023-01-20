@@ -1,20 +1,26 @@
 import type { Reading } from '@/types/Reading'
 import dayjs from 'dayjs'
-import { computed, ref, watch, watchEffect, type Ref } from 'vue'
+import { computed, ref, toRaw, watch, watchEffect, type Ref } from 'vue'
 import { v4 as uuidv4 } from 'uuid';
 
 export function useReadingForm() {
-    const reading = ref<Reading>({
+    const orig = {
         _id: uuidv4(),
         dt: dayjs().valueOf(),
         val: 0,
         amount: 0,
         rate: 0,
-    });
+    }
+    const reading = ref<Reading>(orig);
+
     const dt = ref(dayjs().format('YYYY-MM-DD'))
 
     const setReading = (r: Reading) => {
         reading.value = r
+    }
+
+    const resetReading = () => {
+        Object.assign(reading, orig)
     }
 
     const computedRate = computed(() => {
@@ -53,6 +59,7 @@ export function useReadingForm() {
         reading,
         dt,
         setReading,
+        resetReading,
         computedRate,
     }
 }

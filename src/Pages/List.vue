@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { useReadingStore } from '@/composables/useReadingStore'
 import type { Reading } from '@/types/Reading'
 import { formatDate, formatNumber } from '@/utils'
@@ -25,6 +26,11 @@ const { fetchReadings, orderedReadings } = useReadingStore()
 
 onIonViewWillEnter(async () => await fetchReadings())
 
+const readings = computed(() => {
+  const r = [...orderedReadings.value]
+  return r.reverse()
+});
+
 const openDetails = async (reading: Reading) => {
   const key = reading._id
 
@@ -48,7 +54,7 @@ const openDetails = async (reading: Reading) => {
       <ion-list lines="full">
         <ion-item
           :detail="true"
-          v-for="(read, k) in orderedReadings"
+          v-for="(read, k) in readings"
           :key="k"
           button
           @click="openDetails(read)"
