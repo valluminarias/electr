@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.electr',
-  appName: 'electr',
+  appName: 'Electr',
   webDir: 'www',
   bundledWebRuntime: false
 };
