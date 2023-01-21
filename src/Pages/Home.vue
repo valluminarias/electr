@@ -3,7 +3,6 @@ import dayjs from 'dayjs'
 import { computed, defineAsyncComponent, ref } from 'vue'
 import type { Reading, ReadingList } from '@/types/Reading'
 import { useReadingStore } from '@/composables/useReadingStore'
-import Chart from '@/Pages/Partials/Chart.vue'
 import { formatDate, formatNumber } from '@/utils'
 import {
   IonToolbar,
@@ -39,6 +38,7 @@ import {
   informationCircle,
 } from 'ionicons/icons'
 
+const Chart = defineAsyncComponent(() => import('@/Pages/Partials/Chart.vue'))
 const CreateReading = defineAsyncComponent(() => import('@/Modals/CreateReading.vue'))
 
 const router = useIonRouter()
@@ -69,6 +69,10 @@ const modalOpened = ref(false)
 
 const openCreate = async () => {
   modalOpened.value = true
+}
+
+const modalWillDismiss = () => {
+  modalOpened.value = false
 }
 
 const submitCreate = async (data: Reading) => {
@@ -153,7 +157,7 @@ const submitCreate = async (data: Reading) => {
       </ion-fab>
     </ion-content>
 
-    <ion-modal :is-open="modalOpened">
+    <ion-modal :is-open="modalOpened" @willDismiss="modalWillDismiss">
       <ion-content>
         <CreateReading @cancel="modalOpened = false" @submit="submitCreate"></CreateReading>
       </ion-content>
