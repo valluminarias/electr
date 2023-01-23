@@ -38,7 +38,7 @@ import {
   colorWand,
   informationCircle,
 } from 'ionicons/icons'
-import Logo from '@/assets/logo.svg';
+import Logo from "@/Components/Logo.vue"
 
 const Chart = defineAsyncComponent(() => import('@/Pages/Partials/Chart.vue'))
 const CreateReading = defineAsyncComponent(() => import('@/Modals/CreateReading.vue'))

@@ -46,6 +46,6 @@ jobs:
       - name: Upload release apk
         uses: actions/upload-artifact@v3
         with:
-          name: app-release
+          name: electr
           path: android/app/build/outputs/apk/release/app-release-signed.apk
           retention-days: 60
