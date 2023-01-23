@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from '@ionic/vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 const Home = () => import('@/Pages/Home.vue')
 const List = () => import('@/Pages/List.vue')
+const About = () => import('@/Pages/About.vue')
 const ReadingDetail = () => import('@/Pages/ReadingDetail.vue')
 const EditReading = () => import('@/Pages/EditReading.vue')
 
@@ -25,6 +26,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/readings/:key/edit',
     component: EditReading,
+  },
+  {
+    path: '/about',
+    component: About,
   },
 ]
 

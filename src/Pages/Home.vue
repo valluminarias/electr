@@ -28,6 +28,7 @@ import {
   IonItemDivider,
   IonItem,
   IonModal,
+  IonMenuToggle,
   toastController,
   useIonRouter,
   onIonViewWillEnter,
@@ -37,6 +38,7 @@ import {
   colorWand,
   informationCircle,
 } from 'ionicons/icons'
+import Logo from '@/assets/logo.svg';
 
 const Chart = defineAsyncComponent(() => import('@/Pages/Partials/Chart.vue'))
 const CreateReading = defineAsyncComponent(() => import('@/Modals/CreateReading.vue'))
@@ -92,19 +94,28 @@ const submitCreate = async (data: Reading) => {
 </script>
 
 <template>
-  <ion-page>
+  <ion-page id="main-content">
     <ion-header class="ion-no-border">
-      <ion-toolbar color="primary">
+      <ion-toolbar color="primary" class="ion-no-border">
+        <ion-buttons>
+          <ion-menu-toggle>
+            <ion-button fill="clear">
+              <Logo class="w-8 h-8 fill-current text-white"></Logo>
+            </ion-button>
+          </ion-menu-toggle>
+        </ion-buttons>
+      </ion-toolbar>
+
+      <ion-toolbar color="primary"  class="ion-no-border">
         <ion-title class="mt-4">Welcome</ion-title>
-        <ion-card>
-          <ion-card-content>
-            <Chart :year="presentYear" :readings="orderedReadings"></Chart>
-          </ion-card-content>
-        </ion-card>
       </ion-toolbar>
     </ion-header>
     <ion-content>
-
+      <ion-card>
+        <ion-card-content>
+          <Chart :year="presentYear" :readings="orderedReadings"></Chart>
+        </ion-card-content>
+      </ion-card>
       <div class="mt-1">
         <ion-list>
           <ion-list-header>

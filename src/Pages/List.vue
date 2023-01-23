@@ -16,6 +16,7 @@ import {
   IonIcon,
   IonList,
   IonItem,
+  IonMenuButton,
   useIonRouter,
   onIonViewWillEnter,
 } from '@ionic/vue'
@@ -39,11 +40,12 @@ const openDetails = async (reading: Reading) => {
 </script>
 
 <template>
-  <ion-page>
+  <ion-page id="main-content">
     <ion-header>
       <ion-toolbar color="primary">
         <ion-title>Readings</ion-title>
         <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
           <ion-button direction="back" @click.prevent="$router.back()">
             <ion-icon :icon="arrowBack"></ion-icon>
           </ion-button>
