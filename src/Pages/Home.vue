@@ -32,16 +32,15 @@ import {
   toastController,
   useIonRouter,
   onIonViewWillEnter,
+  actionSheetController,
 } from '@ionic/vue'
-import {
-  addOutline,
-  colorWand,
-  informationCircle,
-} from 'ionicons/icons'
-import Logo from "@/Components/Logo.vue"
+import { addOutline, colorWand, informationCircle } from 'ionicons/icons'
+import Logo from '@/Components/Logo.vue'
 
 const Chart = defineAsyncComponent(() => import('@/Pages/Partials/Chart.vue'))
-const CreateReading = defineAsyncComponent(() => import('@/Modals/CreateReading.vue'))
+const CreateReading = defineAsyncComponent(() =>
+  import('@/Modals/CreateReading.vue'),
+)
 
 const router = useIonRouter()
 const { orderedReadings, fetchReadings, createReading } = useReadingStore()
@@ -52,9 +51,7 @@ const presentYear = dayjs().year()
 
 const latestReadings = computed<ReadingList>(() => {
   const r = [...orderedReadings.value]
-  return r
-    .reverse()
-    .slice(0, 5)
+  return r.reverse().slice(0, 5)
 })
 
 const latestReadingsCount = computed<number>(() => {
@@ -63,8 +60,34 @@ const latestReadingsCount = computed<number>(() => {
 
 const openDetails = async (reading: Reading) => {
   const key = reading._id
-
   router.push(`/readings/${key}`)
+}
+
+const openEdit = async (reading: Reading) => {
+  const key = reading._id
+  router.push(`/readings/${key}/edit`)
+}
+
+const presentActionSheet = async (reading: Reading) => {
+  const actionSheet = await actionSheetController.create({
+    header: `Reading for ${formatDate(reading.dt)}`,
+    buttons: [
+      {
+        text: "View",
+        handler: () => openDetails(reading)
+      },
+      {
+        text: 'Edit',
+        handler: () => openEdit(reading)
+      },
+      {
+        text: 'Cancel',
+        role: 'cancel',
+      },
+    ],
+  })
+
+  await actionSheet.present()
 }
 
 const modalOpened = ref(false)
@@ -78,18 +101,18 @@ const modalWillDismiss = () => {
 }
 
 const submitCreate = async (data: Reading) => {
-    await createReading(data)
+  await createReading(data)
 
-    const toast = await toastController.create({
-      icon: informationCircle,
-      message: 'New Reading Saved!',
-      position: 'top',
-      color: 'success',
-      duration: 1000,
-      animated: true,
-    })
-    await toast.present()
-    modalOpened.value = false
+  const toast = await toastController.create({
+    icon: informationCircle,
+    message: 'New Reading Saved!',
+    position: 'top',
+    color: 'success',
+    duration: 1000,
+    animated: true,
+  })
+  await toast.present()
+  modalOpened.value = false
 }
 </script>
 
@@ -106,7 +129,7 @@ const submitCreate = async (data: Reading) => {
         </ion-buttons>
       </ion-toolbar>
 
-      <ion-toolbar color="primary"  class="ion-no-border">
+      <ion-toolbar color="primary" class="ion-no-border">
         <ion-title class="mt-4">Welcome</ion-title>
       </ion-toolbar>
     </ion-header>
@@ -122,7 +145,7 @@ const submitCreate = async (data: Reading) => {
             <ion-toolbar>
               <ion-label>Latest Readings</ion-label>
               <ion-buttons slot="primary" color="primary">
-                <ion-button router-link="/list" v-if="latestReadingsCount > 0">
+                <ion-button @click="() => $router.push('/list')" v-if="latestReadingsCount > 0">
                   View All
                 </ion-button>
               </ion-buttons>
@@ -132,7 +155,7 @@ const submitCreate = async (data: Reading) => {
             <ion-item-divider>
               <ion-label>{{ formatDate(read.dt) }}</ion-label>
             </ion-item-divider>
-            <ion-item direction="forward" button @click="openDetails(read)">
+            <ion-item direction="forward" button @click="presentActionSheet(read)">
               <ion-grid>
                 <ion-row>
                   <ion-col size-md="6">
@@ -170,7 +193,10 @@ const submitCreate = async (data: Reading) => {
 
     <ion-modal :is-open="modalOpened" @willDismiss="modalWillDismiss">
       <ion-content>
-        <CreateReading @cancel="modalOpened = false" @submit="submitCreate"></CreateReading>
+        <CreateReading
+          @cancel="modalOpened = false"
+          @submit="submitCreate"
+        ></CreateReading>
       </ion-content>
     </ion-modal>
   </ion-page>
