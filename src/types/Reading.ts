@@ -7,6 +7,8 @@ export interface Reading extends HasId {
     val: number,
     amount: number,
     rate: number,
+    current?: number,
+    previous?: number,
 }
 
 export type ReadingList = Reading[]

@@ -19,7 +19,7 @@ import {
   IonInput,
   useIonRouter,
   toastController,
-onIonViewWillEnter,
+  onIonViewWillEnter,
 } from '@ionic/vue'
 import { close, checkmark, informationCircle } from 'ionicons/icons'
 import dayjs from 'dayjs'
@@ -33,17 +33,17 @@ const route = useRoute()
 const { fetchReading, updateReading } = useReadingStore()
 
 const key = route.params.key.toString()
-const {reading, dt,computedRate, setReading } = useReadingForm();
+const { reading, dt, computedRate, setReading } = useReadingForm();
 
 async function fetch() {
-    const res = await fetchReading(key)
-    if (res) {
-        setReading(res)
-    }
+  const res = await fetchReading(key)
+  if (res) {
+    setReading(res)
+  }
 }
 
 onIonViewWillEnter(async () => {
-    await fetch();
+  await fetch();
 })
 
 const cancel = () => {
@@ -51,20 +51,20 @@ const cancel = () => {
 }
 
 const submitEdit = async () => {
-    const key = reading.value.dt.toString();
-    await updateReading(unref(reading));
+  const key = reading.value.dt.toString();
+  await updateReading(unref(reading));
 
-    const toast = await toastController.create({
-      icon: informationCircle,
-      message: 'Reading updated!',
-      position: 'top',
-      color: 'success',
-      duration: 1000,
-      animated: true,
-    })
-    await toast.present()
+  const toast = await toastController.create({
+    icon: informationCircle,
+    message: 'Reading updated!',
+    position: 'top',
+    color: 'success',
+    duration: 1000,
+    animated: true,
+  })
+  await toast.present()
 
-    setTimeout(() => router.back(), 300)
+  setTimeout(() => router.back(), 300)
 }
 </script>
 
@@ -89,36 +89,33 @@ const submitEdit = async () => {
       <ion-list lines="full">
         <ion-item>
           <ion-label>Date:</ion-label>
-          <ion-input
-            type="date"
-            class="ion-text-end"
-            placeholder="Choose Date"
-            slot="end"
-            v-model="dt"
-            :clear-input="true"
-          ></ion-input>
+          <ion-input type="date" class="ion-text-end" placeholder="Choose Date" slot="end" v-model="dt"
+            :clear-input="true"></ion-input>
         </ion-item>
+
+        <ion-item>
+          <ion-label>Previous Reading:</ion-label>
+          <ion-input type="number" class="text-end" placeholder="Enter Reading in KWh" :clear-input="true"
+            v-model="reading.previous" @click="$event.target.select()"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Current Reading:</ion-label>
+          <ion-input type="number" class="text-end" placeholder="Enter Reading in KWh" :clear-input="true"
+            v-model="reading.current" @click="$event.target.select()"></ion-input>
+        </ion-item>
+
         <ion-item>
           <ion-label>Reading(KWh):</ion-label>
-          <ion-input
-            type="number"
-            class="ion-text-end"
-            placeholder="Enter Reading in KWh"
-            :clear-input="true"
-            v-model="reading.val"
-            @click="$event.target.select()"
-          ></ion-input>
+          <ion-label class="text-end">
+            {{ reading.val }}/kWh
+          </ion-label>
         </ion-item>
+
         <ion-item>
           <ion-label>Amount:</ion-label>
-          <ion-input
-            type="number"
-            class="ion-text-end"
-            placeholder="Enter Reading in KWh"
-            :clear-input="true"
-            v-model="reading.amount"
-            @click="$event.target.select()"
-          ></ion-input>
+          <ion-input type="number" class="ion-text-end" placeholder="Enter Reading in KWh" :clear-input="true"
+            v-model="reading.amount" @click="$event.target.select()"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label>Rate/kWh:</ion-label>

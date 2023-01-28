@@ -10,6 +10,8 @@ export function useReadingForm() {
         val: 0,
         amount: 0,
         rate: 0,
+        current: 0,
+        previous: 0,
     }
     const reading = ref<Reading>(orig);
 
@@ -30,6 +32,10 @@ export function useReadingForm() {
     watchEffect(() => {
         if (reading.value) {
             dt.value = dayjs(reading.value.dt).format('YYYY-MM-DD')
+
+            if (reading.value.previous && reading.value.current) {
+                reading.value.val = reading.value.current - reading.value.previous
+            }
         }
     })
 

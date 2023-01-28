@@ -94,7 +94,10 @@ const edit = () => {
         </ion-item>
         <ion-item>
           <ion-label>Reading:</ion-label>
-          <ion-label slot="end">{{ reading?.val }}kWh</ion-label>
+          <ion-label slot="end">
+            <em>{{ reading?.current + "-" + reading?.previous }}</em>
+            <strong>{{ " (" + reading?.val + ")" }}kWh</strong>
+          </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>Amount:</ion-label>
