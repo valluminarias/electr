@@ -36,17 +36,22 @@ import {
 import { addOutline, colorWand, informationCircle } from 'ionicons/icons'
 import Logo from '@/Components/Logo.vue'
 
+const Metrics = defineAsyncComponent(() => import('@/Pages/Partials/Metrics.vue'))
 const Chart = defineAsyncComponent(() => import('@/Pages/Partials/Chart.vue'))
 const CreateReading = defineAsyncComponent(() =>
   import('@/Modals/CreateReading.vue'),
 )
 
 const router = useIonRouter()
-const { orderedReadings, fetchReadings, createReading } = useReadingStore()
-
-onIonViewWillEnter(async () => await fetchReadings())
+const { orderedReadings, fetchReadings, createReading, setFilter } = useReadingStore()
 
 const presentYear = dayjs().year()
+
+onIonViewWillEnter(async () => {
+  await fetchReadings()
+  setFilter({year: presentYear})
+})
+
 
 const latestReadings = computed<ReadingList>(() => {
   const r = [...orderedReadings.value]
@@ -110,6 +115,7 @@ const submitCreate = async (data: Reading) => {
     duration: 1000,
     animated: true,
   })
+
   await toast.present()
   modalOpened.value = false
 }
@@ -127,12 +133,16 @@ const submitCreate = async (data: Reading) => {
           </ion-menu-toggle>
         </ion-buttons>
       </ion-toolbar>
-
-      <ion-toolbar color="primary" class="ion-no-border">
-        <ion-title class="mt-4">Welcome</ion-title>
-      </ion-toolbar>
     </ion-header>
     <ion-content>
+      <!-- KPIs -->
+      <div class="ion-padding">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">
+          This Year - {{ presentYear }}
+        </h3>
+        <Metrics :year="presentYear"></Metrics>
+      </div>
+
       <ion-card>
         <ion-card-content>
           <Chart :year="presentYear" :readings="orderedReadings"></Chart>
