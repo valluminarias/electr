@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { computed, onMounted, onUpdated } from 'vue';
+import { computed, onBeforeUpdate, onMounted, onUpdated } from 'vue';
 import { useReadingStore } from '@/composables/useReadingStore'
 import dayjs from 'dayjs';
 
-const { latestReading, previousReading, largestReading, average, fetchReadings, setFilter } = useReadingStore()
+const { filteredReadings, latestReading, previousReading, largestReading, fetchReadings, setFilter } = useReadingStore()
 
 const props = defineProps<{
     year: number
@@ -17,6 +17,14 @@ onMounted(() => {
 onUpdated(() => {
     fetchReadings()
 })
+
+const average = computed<number>(() => {
+    if (filteredReadings.value.length == 0) return 0
+    const sum = filteredReadings.value.reduce((sum, r) => {
+        return sum + r.val
+    }, 0);
+    return  sum / filteredReadings.value.length
+  })
 
 const largestMonth = computed<String>(() => {
     if (Object.keys(largestReading.value).length == 0) return "--"
@@ -44,7 +52,7 @@ const largestMonth = computed<String>(() => {
                 <dt class="text-base font-normal text-gray-900">Avg. Reading (kWh)</dt>
                 <dd class="mt-1 flex justify-between items-baseline md:block lg:flex">
                     <div class="flex items-baseline text-2xl font-semibold text-indigo-600">
-                        {{ average }}kWh
+                        {{ average.toFixed(1) }}kWh
                     </div>
                 </dd>
             </div>

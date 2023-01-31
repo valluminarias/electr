@@ -15,7 +15,9 @@ export function useReadingStore() {
   })
 
   const fetchReadings = async () => {
-    readings.value = await store.fetchAll();
+    const data = await store.fetchAll();
+
+    readings.value = data.map<Reading>(d => <Reading> JSON.parse(atob(d)))
   };
 
   const fetchReading = async (key: string): Promise<Reading | null> => {
@@ -29,7 +31,7 @@ export function useReadingStore() {
 
   const createReading = async (reading: Reading) => {
     const key = reading._id;
-    await store.save(key, reading);
+    await store.save(key, btoa(JSON.stringify(reading)));
     readings.value.push(reading);
   };
 
@@ -42,7 +44,7 @@ export function useReadingStore() {
   const deleteReading = async (reading: Reading) => {
     const key = reading._id;
     await store.remove(key);
-    readings.value.splice(readings.value.indexOf(reading), 1);
+    readings.value = [...readings.value].splice(readings.value.indexOf(reading), 1);
   };
 
   const setFilter = (filters: ReadingsFilter) => {
@@ -72,14 +74,6 @@ export function useReadingStore() {
     return r.shift();
   });
 
-  const average = computed<number>(() => {
-    if (filteredReadings.value.length == 0) return 0
-    const sum = filteredReadings.value.reduce((sum, r) => {
-        return sum + r.val
-    }, 0);
-    return  sum / filteredReadings.value.length
-  })
-
   const largestReading = computed<Reading>(() => {
     return filteredReadings.value.reduce((largest, r) => {
         if(largest.val == undefined) {
@@ -91,10 +85,10 @@ export function useReadingStore() {
 
   return {
     readings,
+    filteredReadings,
     orderedReadings,
     latestReading,
     previousReading,
-    average,
     largestReading,
     setFilter,
     fetchReadings,
