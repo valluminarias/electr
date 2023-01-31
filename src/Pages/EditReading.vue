@@ -3,7 +3,7 @@ import { computed, onMounted, reactive, ref, unref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import type { Reading } from '@/types/Reading'
 import { useReadingStore } from '@/composables/useReadingStore'
-import { formatDate, formatNumber } from '@/utils'
+import { formatDate, formatCurrency } from '@/utils'
 import {
   IonToolbar,
   IonTitle,
@@ -121,7 +121,7 @@ const submitEdit = async () => {
           <ion-label>Rate/kWh:</ion-label>
           <ion-label>Rate(/KWh):</ion-label>
           <ion-label class="ion-text-end">
-            {{ formatNumber(computedRate) }}/kWh
+            {{ formatCurrency(computedRate) }}/kWh
           </ion-label>
         </ion-item>
       </ion-list>

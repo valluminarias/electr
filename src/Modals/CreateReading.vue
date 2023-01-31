@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { unref, onMounted } from 'vue'
-import { formatNumber } from '@/utils'
+import { formatCurrency } from '@/utils'
 import {
   IonHeader,
   IonToolbar,
@@ -112,7 +112,7 @@ const submit = async () => {
       <ion-item>
         <ion-label>Rate(/KWh):</ion-label>
         <ion-label class="text-end">
-          {{ formatNumber(computedRate) }}/kWh
+          {{ formatCurrency(computedRate) }}/kWh
         </ion-label>
       </ion-item>
     </ion-list>

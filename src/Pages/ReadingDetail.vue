@@ -3,7 +3,7 @@ import { computed, ref, unref } from 'vue'
 import { useRoute } from 'vue-router'
 import type { Reading } from '@/types/Reading'
 import { useReadingStore } from '@/composables/useReadingStore'
-import { formatNumber } from '@/utils'
+import { formatCurrency } from '@/utils'
 import {
   IonToolbar,
   IonTitle,
@@ -102,13 +102,13 @@ const edit = () => {
         <ion-item>
           <ion-label>Amount:</ion-label>
           <ion-label slot="end">
-            {{ formatNumber(reading?.amount ?? 0) }}
+            {{ formatCurrency(reading?.amount ?? 0) }}
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label>Rate/kWh:</ion-label>
           <ion-label slot="end">
-            {{ formatNumber(reading?.rate ?? 0) }}/kWh
+            {{ formatCurrency(reading?.rate ?? 0) }}/kWh
           </ion-label>
         </ion-item>
       </ion-list>

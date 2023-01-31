@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { Reading, ReadingList } from '@/types/Reading'
 import dayjs from 'dayjs'
-import { computed, unref } from 'vue'
+import { computed } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 
 const props = defineProps<{

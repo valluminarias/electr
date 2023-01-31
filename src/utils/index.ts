@@ -4,7 +4,7 @@ const formatDate = (dt: number) => {
   return dayjs(dt).format('YYYY - MMMM')
 }
 
-const formatNumber = (num: number) => {
+const formatCurrency = (num: number) => {
   return new Intl.NumberFormat('en-PH', {
     style: 'currency',
     currency: 'PHP',
@@ -13,12 +13,12 @@ const formatNumber = (num: number) => {
 
 export {
   formatDate,
-  formatNumber,
+  formatCurrency,
 }
 
 export default function () {
   return {
     formatDate,
-    formatNumber,
+    formatCurrency,
   }
 }

@@ -3,10 +3,9 @@ import dayjs from 'dayjs'
 import { computed, defineAsyncComponent, ref } from 'vue'
 import type { Reading, ReadingList } from '@/types/Reading'
 import { useReadingStore } from '@/composables/useReadingStore'
-import { formatDate, formatNumber } from '@/utils'
+import { formatDate, formatCurrency } from '@/utils'
 import {
   IonToolbar,
-  IonTitle,
   IonPage,
   IonHeader,
   IonContent,
@@ -163,21 +162,18 @@ const submitCreate = async (data: Reading) => {
                   </ion-col>
                   <ion-col size-md="6">
                     <ion-label>
-                      Amount: {{ formatNumber(read.amount) }}
+                      Amount: {{ formatCurrency(read.amount) }}
                     </ion-label>
                   </ion-col>
                   <ion-col size-md="6">
-                    <ion-label>Rate: {{ formatNumber(read.rate) }}</ion-label>
+                    <ion-label>Rate: {{ formatCurrency(read.rate) }}</ion-label>
                   </ion-col>
                 </ion-row>
               </ion-grid>
             </ion-item>
           </ion-item-group>
         </ion-list>
-        <div
-          v-if="latestReadingsCount == 0"
-          class="text-center ion-margin ion-padding"
-        >
+        <div v-if="latestReadingsCount == 0" class="text-center ion-margin ion-padding">
           <ion-icon color="medium" size="large" :icon="colorWand"></ion-icon>
           <ion-text color="medium">
             <h5>No Data Yet. Create a record first!</h5>
@@ -193,10 +189,7 @@ const submitCreate = async (data: Reading) => {
 
     <ion-modal :is-open="modalOpened" @willDismiss="modalWillDismiss">
       <ion-content>
-        <CreateReading
-          @cancel="modalOpened = false"
-          @submit="submitCreate"
-        ></CreateReading>
+        <CreateReading @cancel="modalOpened = false" @submit="submitCreate"></CreateReading>
       </ion-content>
     </ion-modal>
   </ion-page>

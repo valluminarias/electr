@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, ref } from 'vue'
 import { useReadingStore } from '@/composables/useReadingStore'
 import type { Reading } from '@/types/Reading'
-import { formatDate, formatNumber } from '@/utils'
+import { formatDate, formatCurrency } from '@/utils'
 import {
   IonToolbar,
   IonTitle,
@@ -127,7 +127,7 @@ const submitCreate = async (data: Reading) => {
           @click="presentActionSheet(read)"
         >
           <ion-label>{{ formatDate(read.dt) }}</ion-label>
-          <ion-label slot="end">{{ formatNumber(read.amount) }}</ion-label>
+          <ion-label slot="end">{{ formatCurrency(read.amount) }}</ion-label>
         </ion-item>
       </ion-list>
 
