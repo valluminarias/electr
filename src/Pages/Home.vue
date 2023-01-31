@@ -5,6 +5,7 @@ import type { Reading, ReadingList } from '@/types/Reading'
 import { useReadingStore } from '@/composables/useReadingStore'
 import { formatDate, formatCurrency } from '@/utils'
 import {
+  IonTitle,
   IonToolbar,
   IonPage,
   IonHeader,
@@ -28,13 +29,17 @@ import {
   IonItem,
   IonModal,
   IonMenuToggle,
+  IonSelect,
+  IonSelectOption,
   toastController,
   useIonRouter,
   onIonViewWillEnter,
   actionSheetController,
+  type SelectChangeEventDetail,
 } from '@ionic/vue'
 import { addOutline, colorWand, informationCircle } from 'ionicons/icons'
 import Logo from '@/Components/Logo.vue'
+import type { IonSelectCustomEvent } from '@ionic/core'
 
 const Metrics = defineAsyncComponent(() => import('@/Pages/Partials/Metrics.vue'))
 const Chart = defineAsyncComponent(() => import('@/Pages/Partials/Chart.vue'))
@@ -43,15 +48,32 @@ const CreateReading = defineAsyncComponent(() =>
 )
 
 const router = useIonRouter()
-const { orderedReadings, fetchReadings, createReading, setFilter } = useReadingStore()
+const { readings, orderedReadings, fetchReadings, createReading, setFilter } = useReadingStore()
 
-const presentYear = dayjs().year()
+const presentYear = ref<number>(dayjs().year())
 
 onIonViewWillEnter(async () => {
   await fetchReadings()
-  setFilter({year: presentYear})
+  setFilter({ year: presentYear.value })
 })
 
+const years = computed(() => {
+  const r = [...readings.value]
+
+  const yrs: number[] = []
+
+  r.forEach(v => {
+    const yr = dayjs(v.dt).year()
+    if(! yrs.includes(yr)) {
+      yrs.push(yr)
+    }
+  })
+
+  yrs.sort()
+  yrs.reverse()
+
+  return yrs;
+})
 
 const latestReadings = computed<ReadingList>(() => {
   const r = [...orderedReadings.value]
@@ -119,6 +141,11 @@ const submitCreate = async (data: Reading) => {
   await toast.present()
   modalOpened.value = false
 }
+
+const changeYear = (ev: IonSelectCustomEvent<SelectChangeEventDetail<any>>) => {
+  presentYear.value = Number(ev.target.value);
+  setFilter({ year: presentYear.value })
+}
 </script>
 
 <template>
@@ -137,9 +164,15 @@ const submitCreate = async (data: Reading) => {
     <ion-content>
       <!-- KPIs -->
       <div class="ion-padding">
-        <h3 class="text-lg leading-6 font-medium text-gray-900">
-          This Year - {{ presentYear }}
-        </h3>
+        <div class="flex justify-between items-center">
+          <ion-title>Welcome</ion-title>
+          <ion-select interface="action-sheet" placeholder="Select Year" :selectedText="presentYear.toString()"
+            @ion-change="changeYear">
+            <template v-for="yr in years">
+              <ion-select-option :value="yr">{{ yr }}</ion-select-option>
+            </template>
+          </ion-select>
+        </div>
         <Metrics :year="presentYear"></Metrics>
       </div>
 

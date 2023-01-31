@@ -20,6 +20,7 @@ export default defineConfig({
   },
   build: {
     outDir: path.join(__dirname, "www"),
-    emptyOutDir: true
+    emptyOutDir: true,
+    chunkSizeWarningLimit: 1000,
   }
 })
