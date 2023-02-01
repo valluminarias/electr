@@ -1,6 +1,14 @@
-# electr
+<p align="center">
+    <img src="./src/assets/logo-colored.svg" width="200px"/>
+</p>
+<h2 align="center">Electr is an app for tracking electric bill readings.</h2>
 
-Electr is an app for tracking electric bill readings.
+&nbsp;
+<p align="center">
+    <a href="https://github.com/valluminarias/electr/releases/latest">
+        <img src="https://img.shields.io/github/v/release/valluminarias/electr.svg?include_prereleases" alt="Latest release" />
+    </a>
+</p>
 
 ## Made with
 - [<img alt="Vite" src="https://img.shields.io/badge/-Vite-3e3e3e?style=for-the-badge&logo=vite&logoColor=646CFF" />](https://vuejs.org)
