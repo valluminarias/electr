@@ -10,6 +10,10 @@
     </a>
 </p>
 
+<p align="center">
+    <img src="./mockups/mockup.png" width="400px" />
+</p>
+
 ## Made with
 - [<img alt="Vite" src="https://img.shields.io/badge/-Vite-3e3e3e?style=for-the-badge&logo=vite&logoColor=646CFF" />](https://vuejs.org)
 - [<img alt="Vue.Js" src="https://img.shields.io/badge/-Vue.Js-3e3e3e?style=for-the-badge&logo=vue.js&logoColor=4FC08D" />](https://vuejs.org)
