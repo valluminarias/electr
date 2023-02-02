@@ -166,7 +166,7 @@ const changeYear = (ev: IonSelectCustomEvent<SelectChangeEventDetail<any>>) => {
       <div class="ion-padding">
         <div class="flex justify-between items-center">
           <ion-title>Welcome</ion-title>
-          <ion-select interface="action-sheet" placeholder="Select Year" :selectedText="presentYear.toString()"
+          <ion-select placeholder="Select Year" :selectedText="presentYear.toString()"
             @ion-change="changeYear">
             <template v-for="yr in years">
               <ion-select-option :value="yr">{{ yr }}</ion-select-option>

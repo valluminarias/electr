@@ -2,6 +2,7 @@
  * Ionic with TailwindCss Styles
  * ===============================================
  */
+ @import './dark.css';
  @import '@ionic/vue/css/core.css';
 
  @import 'tailwindcss/base.css';

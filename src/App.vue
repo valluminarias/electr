@@ -21,6 +21,7 @@ import {
   readerOutline,
   information,
   informationCircleOutline,
+  settingsOutline,
 } from 'ionicons/icons'
 import Logo from "@/Components/Logo.vue"
 
@@ -50,6 +51,13 @@ import Logo from "@/Components/Logo.vue"
                   <ion-item router-link="/list">
                     <ion-icon :icon="readerOutline"></ion-icon>
                     <ion-label class="ml-2">Readings</ion-label>
+                  </ion-item>
+                </ion-menu-toggle>
+
+                <ion-menu-toggle>
+                  <ion-item router-link="/settings">
+                    <ion-icon :icon="settingsOutline"></ion-icon>
+                    <ion-label class="ml-2">Settings</ion-label>
                   </ion-item>
                 </ion-menu-toggle>
 

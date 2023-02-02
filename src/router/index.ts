@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 const Home = () => import('@/Pages/Home.vue')
 const List = () => import('@/Pages/List.vue')
 const About = () => import('@/Pages/About.vue')
+const Setting = () => import('@/Pages/Setting.vue')
 const ReadingDetail = () => import('@/Pages/ReadingDetail.vue')
 const EditReading = () => import('@/Pages/EditReading.vue')
 
@@ -30,6 +31,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/about',
     component: About,
+  },
+  {
+    path: '/settings',
+    component: Setting,
   },
 ]
 
