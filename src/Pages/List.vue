@@ -52,7 +52,7 @@ const openEdit = async (reading: Reading) => {
 
 const presentActionSheet = async (reading: Reading) => {
   const actionSheet = await actionSheetController.create({
-    header: `Reading for ${formatDate(reading.dt)}`,
+    header: `Reading for ${formatDate(reading.dt, "YYYY - MMMM")}`,
     buttons: [
       {
         text: 'View',
@@ -126,7 +126,7 @@ const submitCreate = async (data: Reading) => {
           button
           @click="presentActionSheet(read)"
         >
-          <ion-label>{{ formatDate(read.dt) }}</ion-label>
+          <ion-label>{{ formatDate(read.dt, "YYYY - MMMM") }}</ion-label>
           <ion-label slot="end">{{ formatCurrency(read.amount) }}</ion-label>
         </ion-item>
       </ion-list>

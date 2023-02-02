@@ -96,7 +96,7 @@ const openEdit = async (reading: Reading) => {
 
 const presentActionSheet = async (reading: Reading) => {
   const actionSheet = await actionSheetController.create({
-    header: `Reading for ${formatDate(reading.dt)}`,
+    header: `Reading for ${formatDate(reading.dt, "YYYY - MMMM")}`,
     buttons: [
       {
         text: "View",
@@ -195,7 +195,7 @@ const changeYear = (ev: IonSelectCustomEvent<SelectChangeEventDetail<any>>) => {
           </ion-list-header>
           <ion-item-group v-for="read in latestReadings">
             <ion-item-divider>
-              <ion-label>{{ formatDate(read.dt) }}</ion-label>
+              <ion-label>{{ formatDate(read.dt, "YYYY - MMMM") }}</ion-label>
             </ion-item-divider>
             <ion-item direction="forward" button @click="presentActionSheet(read)">
               <ion-grid>

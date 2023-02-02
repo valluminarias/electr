@@ -17,7 +17,7 @@ export function useReadingStore() {
   const fetchReadings = async () => {
     const data = await store.fetchAll();
 
-    readings.value = data.map<Reading>(d => <Reading> JSON.parse(atob(d)))
+    readings.value = data.map<Reading>(d => JSON.parse(atob(d)) as Reading)
   };
 
   const fetchReading = async (key: string): Promise<Reading | null> => {
@@ -37,7 +37,7 @@ export function useReadingStore() {
 
   const updateReading = async (reading: Reading) => {
     await deleteReading(reading);
-    await store.save(reading._id, reading);
+    await store.save(reading._id, btoa(JSON.stringify(reading)));
     readings.value.push(reading);
   };
 

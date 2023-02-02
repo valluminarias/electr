@@ -1,12 +1,14 @@
 import type { Reading } from '@/types/Reading'
 import dayjs from 'dayjs'
-import { computed, ref, toRaw, watch, watchEffect, type Ref } from 'vue'
+import { computed, ref, watch, watchEffect } from 'vue'
 import { v4 as uuidv4 } from 'uuid';
 
 export function useReadingForm() {
     const orig = {
         _id: uuidv4(),
         dt: dayjs().valueOf(),
+        period_from: dayjs().valueOf(),
+        period_to: dayjs().valueOf(),
         val: 0,
         amount: 0,
         rate: 0,
@@ -15,7 +17,8 @@ export function useReadingForm() {
     }
     const reading = ref<Reading>(orig);
 
-    const dt = ref(dayjs().format('YYYY-MM-DD'))
+    const dt_from = ref(dayjs().format('YYYY-MM-DD'))
+    const dt_to = ref(dayjs().format('YYYY-MM-DD'))
 
     const setReading = (r: Reading) => {
         reading.value = r
@@ -31,7 +34,8 @@ export function useReadingForm() {
 
     watchEffect(() => {
         if (reading.value) {
-            dt.value = dayjs(reading.value.dt).format('YYYY-MM-DD')
+            dt_from.value = dayjs(reading.value.period_from).format('YYYY-MM-DD')
+            dt_to.value = dayjs(reading.value.period_to).format('YYYY-MM-DD')
 
             if (reading.value.previous && reading.value.current) {
                 reading.value.val = reading.value.current - reading.value.previous
@@ -39,8 +43,12 @@ export function useReadingForm() {
         }
     })
 
-    watch(dt, (v) => {
-        reading.value.dt = dayjs(v).valueOf()
+    watch(dt_from, (v) => {
+        reading.value.period_from = dayjs(v).valueOf()
+    })
+
+    watch(dt_to, (v) => {
+        reading.value.dt = reading.value.period_to = dayjs(v).valueOf()
     })
 
     watch(
@@ -63,7 +71,8 @@ export function useReadingForm() {
 
     return {
         reading,
-        dt,
+        dt_from,
+        dt_to,
         setReading,
         resetReading,
         computedRate,

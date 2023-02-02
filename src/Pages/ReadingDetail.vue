@@ -3,7 +3,7 @@ import { computed, ref, unref } from 'vue'
 import { useRoute } from 'vue-router'
 import type { Reading } from '@/types/Reading'
 import { useReadingStore } from '@/composables/useReadingStore'
-import { formatCurrency } from '@/utils'
+import { formatDate, formatCurrency } from '@/utils'
 import {
   IonToolbar,
   IonTitle,
@@ -21,10 +21,6 @@ import {
   onIonViewWillEnter,
 } from '@ionic/vue'
 import { arrowBack, pencil, trash, informationCircle } from 'ionicons/icons'
-import dayjs from 'dayjs'
-import LocalizedFormat from 'dayjs/plugin/localizedFormat'
-
-dayjs.extend(LocalizedFormat)
 
 const router = useIonRouter()
 const route = useRoute()
@@ -37,8 +33,8 @@ onIonViewWillEnter(async () => {
   reading.value = await fetchReading(key)
 })
 
-const formattedDate = computed(() => {
-  return dayjs(reading.value?.dt).format('LLL')
+const formattedPeriod = computed(() => {
+  return formatDate(reading.value?.period_from ?? 0, 'll') + " - " + formatDate(reading.value?.period_to ?? 0, 'll')
 })
 
 const remove = async () => {
@@ -89,8 +85,8 @@ const edit = () => {
     <ion-content class="ion-padding">
       <ion-list lines="full">
         <ion-item>
-          <ion-label>Date:</ion-label>
-          <ion-label slot="end">{{ formattedDate }}</ion-label>
+          <ion-label>Period:</ion-label>
+          <ion-label slot="end">{{ formattedPeriod }}</ion-label>
         </ion-item>
         <ion-item>
           <ion-label>Reading:</ion-label>

@@ -1,7 +1,9 @@
 import dayjs from "dayjs"
+import LocalizedFormat from 'dayjs/plugin/localizedFormat'
+dayjs.extend(LocalizedFormat)
 
-const formatDate = (dt: number) => {
-  return dayjs(dt).format('YYYY - MMMM')
+const formatDate = (dt: number, format: string) => {
+  return dayjs(dt).format(format)
 }
 
 const formatCurrency = (num: number) => {

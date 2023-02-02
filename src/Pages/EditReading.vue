@@ -33,7 +33,7 @@ const route = useRoute()
 const { fetchReading, updateReading } = useReadingStore()
 
 const key = route.params.key.toString()
-const { reading, dt, computedRate, setReading } = useReadingForm();
+const { reading, dt_from, dt_to, computedRate, setReading } = useReadingForm()
 
 async function fetch() {
   const res = await fetchReading(key)
@@ -51,7 +51,6 @@ const cancel = () => {
 }
 
 const submitEdit = async () => {
-  const key = reading.value.dt.toString();
   await updateReading(unref(reading));
 
   const toast = await toastController.create({
@@ -72,7 +71,7 @@ const submitEdit = async () => {
   <ion-page>
     <ion-header>
       <ion-toolbar color="primary">
-        <ion-title>Reading - {{ formatDate(reading?.dt ?? 0) }}</ion-title>
+        <ion-title>Reading - {{ formatDate(reading?.dt ?? 0, "YYYY - MMMM") }}</ion-title>
         <ion-buttons slot="start">
           <ion-button @click="cancel">
             <ion-icon :icon="close"></ion-icon>
@@ -88,8 +87,14 @@ const submitEdit = async () => {
     <ion-content class="ion-padding">
       <ion-list lines="full">
         <ion-item>
-          <ion-label>Date:</ion-label>
-          <ion-input type="date" class="ion-text-end" placeholder="Choose Date" slot="end" v-model="dt"
+          <ion-label>Period From:</ion-label>
+          <ion-input type="date" class="text-end" placeholder="Choose Date" v-model="dt_from" slot="end"
+            :clear-input="true"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Period To:</ion-label>
+          <ion-input type="date" class="text-end" placeholder="Choose Date" v-model="dt_to" slot="end"
             :clear-input="true"></ion-input>
         </ion-item>
 
@@ -114,7 +119,7 @@ const submitEdit = async () => {
 
         <ion-item>
           <ion-label>Amount:</ion-label>
-          <ion-input type="number" class="ion-text-end" placeholder="Enter Reading in KWh" :clear-input="true"
+          <ion-input type="number" class="text-end" placeholder="Enter Reading Amount" :clear-input="true"
             v-model="reading.amount" @click="$event.target.select()"></ion-input>
         </ion-item>
         <ion-item>

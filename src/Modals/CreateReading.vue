@@ -19,7 +19,7 @@ import { checkmark, close } from 'ionicons/icons'
 import { useReadingForm } from '@/composables/useReadingForm'
 import type { Reading } from '@/types/Reading'
 
-const { reading, dt, computedRate } = useReadingForm()
+const { reading, dt_from, dt_to, computedRate } = useReadingForm()
 
 const emit = defineEmits<{
   (e: 'submit', value: Reading): void,
@@ -57,12 +57,24 @@ const submit = async () => {
       </ion-list-header>
 
       <ion-item>
-        <ion-label>Date:</ion-label>
+        <ion-label>Period From:</ion-label>
         <ion-input
           type="date"
           class="text-end"
           placeholder="Choose Date"
-          v-model="dt"
+          v-model="dt_from"
+          slot="end"
+          :clear-input="true"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Period To:</ion-label>
+        <ion-input
+          type="date"
+          class="text-end"
+          placeholder="Choose Date"
+          v-model="dt_to"
           slot="end"
           :clear-input="true"
         ></ion-input>
@@ -103,7 +115,7 @@ const submit = async () => {
         <ion-input
           type="number"
           class="text-end"
-          placeholder="Enter Reading in KWh"
+          placeholder="Enter Reading Amount"
           :clear-input="true"
           v-model="reading.amount"
           @click="$event.target.select()"
