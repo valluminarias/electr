@@ -37,7 +37,7 @@ import {
   actionSheetController,
   type SelectChangeEventDetail,
 } from '@ionic/vue'
-import { addOutline, colorWand, informationCircle } from 'ionicons/icons'
+import { addOutline, colorWand, informationCircle, settingsOutline } from 'ionicons/icons'
 import Logo from '@/Components/Logo.vue'
 import type { IonSelectCustomEvent } from '@ionic/core'
 
@@ -64,7 +64,7 @@ const years = computed(() => {
 
   r.forEach(v => {
     const yr = dayjs(v.dt).year()
-    if(! yrs.includes(yr)) {
+    if (!yrs.includes(yr)) {
       yrs.push(yr)
     }
   })
@@ -152,12 +152,17 @@ const changeYear = (ev: IonSelectCustomEvent<SelectChangeEventDetail<any>>) => {
   <ion-page id="main-content">
     <ion-header class="ion-no-border">
       <ion-toolbar color="primary" class="ion-no-border">
-        <ion-buttons>
+        <ion-buttons slot="start">
           <ion-menu-toggle>
             <ion-button fill="clear">
               <Logo class="w-8 h-8 fill-current text-white"></Logo>
             </ion-button>
           </ion-menu-toggle>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button router-link="/settings">
+            <ion-icon :icon="settingsOutline"></ion-icon>
+          </ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -166,8 +171,7 @@ const changeYear = (ev: IonSelectCustomEvent<SelectChangeEventDetail<any>>) => {
       <div class="ion-padding">
         <div class="flex justify-between items-center">
           <ion-title>Welcome</ion-title>
-          <ion-select placeholder="Select Year" :selectedText="presentYear.toString()"
-            @ion-change="changeYear">
+          <ion-select placeholder="Select Year" :selectedText="presentYear.toString()" @ion-change="changeYear">
             <template v-for="yr in years">
               <ion-select-option :value="yr">{{ yr }}</ion-select-option>
             </template>
