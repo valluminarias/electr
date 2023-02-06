@@ -3,6 +3,9 @@ import type { Reading, ReadingList } from '@/types/Reading'
 import dayjs from 'dayjs'
 import { computed } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
+import {  useDark } from "@vueuse/core";
+
+const isDark = useDark()
 
 const props = defineProps<{
   year: number
@@ -16,14 +19,25 @@ const chartOptions = computed(() => {
   return {
     xaxis: {
       categories: categories,
+      labels: {
+        style: {
+          colors: isDark.value ? new Array(categories.length).fill('#fff') : undefined
+        }
+      }
     },
     yaxis: {
       title: {
         text: 'KWh',
+        style: {
+          color: isDark.value ? '#fff' : undefined
+        }
       },
     },
     title: {
       text: 'Monthly Readings',
+      style: {
+        color: isDark.value ? '#fff' : undefined
+      }
     },
     chart: {
       id: 'readings-chart',
@@ -43,6 +57,9 @@ const chartOptions = computed(() => {
     },
     dataLabels: {
       enabled: true,
+      style: {
+        colors: isDark.value ? ['#3e3efe'] : undefined
+      }
     },
     stroke: {
       curve: 'smooth',

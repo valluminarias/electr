@@ -3,6 +3,9 @@ import dayjs from 'dayjs';
 import { computed, nextTick, onMounted, onUpdated, ref, unref, watch } from 'vue';
 import { useReadingStore } from '@/composables/useReadingStore'
 import MetricBlock from "@/Components/Metrics/MetricBlock.vue";
+import { useDark } from "@vueuse/core";
+
+const isDark = useDark()
 
 const { filteredReadings, latestReading, previousReading, largestReading, fetchReadings, setFilter } = useReadingStore()
 
@@ -82,8 +85,18 @@ onUpdated(() => {
 <template>
     <div class="flex justify-around">
         <dl
-            class="mt-5 grid grid-cols-2 rounded-lg bg-gray-800 overflow-hidden shadow divide-y divide-gray-700 md:grid-cols-4 md:divide-y-0 divide-x">
+            class="metrics mt-5 grid grid-cols-2 rounded-lg overflow-hidden shadow divide-y md:grid-cols-4 md:divide-y-0 divide-x">
             <MetricBlock :metric="metric" v-for="(metric, k) in metrics" :key="k"></MetricBlock>
         </dl>
     </div>
 </template>
+
+<style scoped>
+    .metrics {
+        @apply bg-white divide-gray-200
+    }
+
+    .dark .metrics {
+        @apply bg-gray-800 divide-gray-700
+    }
+</style>
