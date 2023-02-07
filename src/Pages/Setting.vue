@@ -41,7 +41,7 @@ const toggleDark = useToggle(useDark())
         <ion-item lines="full">
           <ion-icon slot="start" :icon="moonOutline"></ion-icon>
           <ion-label>
-            Toggle Dark Theme
+            Toggle Dark Mode
           </ion-label>
           <ion-toggle slot="end" :checked="isDark" @ion-change="toggleDark()"></ion-toggle>
         </ion-item>
