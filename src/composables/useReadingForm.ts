@@ -4,7 +4,7 @@ import { computed, ref, watch, watchEffect } from 'vue'
 import { v4 as uuidv4 } from 'uuid';
 
 export function useReadingForm() {
-    const orig = {
+    const orig: Reading = {
         _id: uuidv4(),
         dt: dayjs().valueOf(),
         period_from: dayjs().valueOf(),
@@ -14,11 +14,13 @@ export function useReadingForm() {
         rate: 0,
         current: 0,
         previous: 0,
+        due_date: undefined,
     }
     const reading = ref<Reading>(orig);
 
     const dt_from = ref(dayjs().format('YYYY-MM-DD'))
     const dt_to = ref(dayjs().format('YYYY-MM-DD'))
+    const dt_due = ref(null)
 
     const setReading = (r: Reading) => {
         reading.value = r
@@ -51,6 +53,12 @@ export function useReadingForm() {
         reading.value.dt = reading.value.period_to = dayjs(v).valueOf()
     })
 
+    watch(dt_to, (v) => {
+        if(dt_to) {
+            reading.value.due_date = dayjs(v).valueOf()
+        }
+    })
+
     watch(
         () => reading.value.val,
         (v) => {
@@ -73,6 +81,7 @@ export function useReadingForm() {
         reading,
         dt_from,
         dt_to,
+        dt_due,
         setReading,
         resetReading,
         computedRate,

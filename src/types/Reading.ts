@@ -11,6 +11,7 @@ export interface Reading extends HasId {
     val: number,
     amount: number,
     rate: number,
+    due_date?: number,
 }
 
 export type ReadingList = Reading[]
