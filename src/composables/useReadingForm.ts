@@ -20,7 +20,7 @@ export function useReadingForm() {
 
     const dt_from = ref(dayjs().format('YYYY-MM-DD'))
     const dt_to = ref(dayjs().format('YYYY-MM-DD'))
-    const dt_due = ref(null)
+    const dt_due = ref()
 
     const setReading = (r: Reading) => {
         reading.value = r
