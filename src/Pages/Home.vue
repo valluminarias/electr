@@ -239,7 +239,7 @@ const changeYear = (ev: IonSelectCustomEvent<SelectChangeEventDetail<any>>) => {
 
       <ion-footer class="py-4 mt-4 text-center">
         <span class="text-xs text-teal-300 dark:text-teal-700">
-          @electr
+          Made with 💖by <a href="https://lumval.pages.dev" target="__blank" class="dark:text-teal-500">@val</a>
         </span>
       </ion-footer>
 
