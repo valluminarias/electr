@@ -9,6 +9,7 @@ import {
   IonToolbar,
   IonPage,
   IonHeader,
+  IonFooter,
   IonContent,
   IonButtons,
   IonButton,
@@ -37,7 +38,7 @@ import {
   actionSheetController,
   type SelectChangeEventDetail,
 } from '@ionic/vue'
-import { addOutline, colorWand, informationCircle, settingsOutline } from 'ionicons/icons'
+import { addOutline, colorWand, informationCircle, settingsOutline, calculatorOutline } from 'ionicons/icons'
 import Logo from '@/Components/Logo.vue'
 import type { IonSelectCustomEvent } from '@ionic/core'
 
@@ -46,6 +47,7 @@ const Chart = defineAsyncComponent(() => import('@/Pages/Partials/Chart.vue'))
 const CreateReading = defineAsyncComponent(() =>
   import('@/Modals/CreateReading.vue'),
 )
+const Calculator = defineAsyncComponent(() => import('@/Modals/Calculator.vue'))
 
 const router = useIonRouter()
 const { readings, orderedReadings, fetchReadings, createReading, setFilter } = useReadingStore()
@@ -117,9 +119,14 @@ const presentActionSheet = async (reading: Reading) => {
 }
 
 const modalOpened = ref(false)
+const calcModalOpened = ref(false)
 
 const openCreate = async () => {
   modalOpened.value = true
+}
+
+const openCalc = async () => {
+  calcModalOpened.value = true
 }
 
 const modalWillDismiss = () => {
@@ -155,7 +162,7 @@ const changeYear = (ev: IonSelectCustomEvent<SelectChangeEventDetail<any>>) => {
         <ion-buttons slot="start">
           <ion-menu-toggle>
             <ion-button fill="clear">
-              <Logo class="w-8 h-8 fill-current text-white"></Logo>
+              <Logo class="w-8 h-8 text-white fill-current"></Logo>
             </ion-button>
           </ion-menu-toggle>
         </ion-buttons>
@@ -166,10 +173,11 @@ const changeYear = (ev: IonSelectCustomEvent<SelectChangeEventDetail<any>>) => {
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
+
     <ion-content>
       <!-- KPIs -->
       <div class="ion-padding">
-        <div class="flex justify-between items-center">
+        <div class="flex items-center justify-between">
           <ion-title>Welcome</ion-title>
           <ion-select placeholder="Select Year" :selectedText="presentYear.toString()" @ion-change="changeYear">
             <template v-for="yr in years">
@@ -185,6 +193,7 @@ const changeYear = (ev: IonSelectCustomEvent<SelectChangeEventDetail<any>>) => {
           <Chart :year="presentYear" :readings="orderedReadings"></Chart>
         </ion-card-content>
       </ion-card>
+
       <div class="mt-1">
         <ion-list>
           <ion-list-header>
@@ -227,6 +236,19 @@ const changeYear = (ev: IonSelectCustomEvent<SelectChangeEventDetail<any>>) => {
           </ion-text>
         </div>
       </div>
+
+      <ion-footer class="py-4 mt-4 text-center">
+        <span class="text-xs text-teal-300 dark:text-teal-700">
+          @electr
+        </span>
+      </ion-footer>
+
+      <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+        <ion-fab-button color="success" @click="openCalc">
+          <ion-icon :icon="calculatorOutline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+
       <ion-fab vertical="bottom" horizontal="end" slot="fixed">
         <ion-fab-button @click="openCreate">
           <ion-icon :icon="addOutline"></ion-icon>
@@ -237,6 +259,12 @@ const changeYear = (ev: IonSelectCustomEvent<SelectChangeEventDetail<any>>) => {
     <ion-modal :is-open="modalOpened" @willDismiss="modalWillDismiss">
       <ion-content>
         <CreateReading @cancel="modalOpened = false" @submit="submitCreate"></CreateReading>
+      </ion-content>
+    </ion-modal>
+
+    <ion-modal :is-open="calcModalOpened" @willDismiss="modalWillDismiss">
+      <ion-content>
+        <Calculator @cancel="calcModalOpened = false"></Calculator>
       </ion-content>
     </ion-modal>
   </ion-page>
